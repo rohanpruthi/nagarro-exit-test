@@ -1,0 +1,66 @@
+﻿@*@model PagedList.IPagedList<ContosoUniversity.Models.Student>*@
+
+@model ContosoUniversity.ViewModels.MyNewViewModel
+
+@using PagedList.Mvc;
+@using ContosoUniversity.Custom_Helper
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Students";
+}
+
+<h2>Students</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Student", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", Model.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Last Name", "Index", new { sortOrder = Model.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = Model.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.stu)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.stu.PageCount < Model.stu.PageNumber ? 0 : Model.stu.PageNumber) of @Model.stu.PageCount
+
+@*Html.PagedListPager(Model.stu, page => Url.Action("Index",
+    new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))*@
+@Html.newPagedListPager(Model.stu, page => Url.Action("Index",
+    new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))

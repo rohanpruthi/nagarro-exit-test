@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DotCommerce.ViewModels.HomeViewModel>
+<table class="table">
+    <tr>
+        <th>
+            <h2 style="color:forestgreen">Welcome to Dot Commerce</h2>
+        </th>
+        <th></th>
+    </tr>
+
+
+    @{ int count = 0;}
+
+
+    @foreach (var item in Model)
+    {
+        count++;
+        if (count == 1)
+        {
+            <tr><td><h3 style="color:green">Top 3 Selling Categories </h3></td></tr>
+        }
+        else
+        {
+            if (count == 4)
+            {
+                <tr><td><h3 style="color:green">Other Categories </h3></td></tr>
+            }
+        }
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            @foreach (var subItem in item.Title.Zip(item.Id, (a, b) => new { itemTitle = a, itemId = b }))
+            {
+                
+            <td>
+                @Html.ActionLink(subItem.itemTitle, "Details", "Product", new { id = subItem.itemId},null)
+            </td>
+            }
+        </tr>
+        <tr>
+            <td></td>
+            @foreach (var itemImage in item.ImageUrl)
+            {
+
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => itemImage)" width="70" height="70" />
+                </td>
+            }
+        </tr>
+    }
+
+</table>

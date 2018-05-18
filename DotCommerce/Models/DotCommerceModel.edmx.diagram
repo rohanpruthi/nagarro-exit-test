@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="517f2933f7114f42a6a1a776f3fac8be" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="DotCommerceDataModel.C__RefactorLog" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.Cart" Width="1.5" PointX="7.5" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.Category" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.OrderDetail" Width="1.5" PointX="7.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.Person" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.Product" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.ProductVariant" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.Stock" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DotCommerceDataModel.sysdiagrams" Width="1.5" PointX="11" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_Cart_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_Cart_ProductVariant" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_Product_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_OrderDetail_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_OrderDetail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_ProductVariant_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="DotCommerceDataModel.FK_Stock_Product" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
