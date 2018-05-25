@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+<!-- New Tweet Button-->
+<div class=" float-right">
+  <button class="btn btn-primary my-2" data-toggle="modal" data-target="#newTweetModal">New Tweet</button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="newTweetModal" tabindex="-1" role="dialog" aria-labelledby="newTweetModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newTweetModalLabel">Share Your Thoughts</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/">
+          <div class="form-group">
+            <label for="addNewTweet" class="sr-only">New Tweet</label>
+            <textarea class="form-control" name="tweetBody" id="addNewTweet" rows="3"  maxlength="240" title="Max 240 characters."></textarea>
+            <button type="submit" class="btn btn-primary my-2" data-dismiss="modal">Add Tweet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cards -->
+<div class="row">
+  <div class="col" *ngFor="let item of listTweets">
+      <div class="card" style="margin-top: 3em">
+          <div class="card-body">
+              <img src="../../../../users.png" style="border-radius: 50%" width="50px" height="50px">
+              {{item.Body}}
+          </div>
+          <div class="card-footer text-muted">
+              <a class="card-link">Edit</a>
+              <a class="card-link">Delete</a>
+          </div>
+      </div>
+  </div>
+</div>

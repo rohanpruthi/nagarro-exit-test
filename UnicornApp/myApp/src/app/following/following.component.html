@@ -1,0 +1,37 @@
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+  <!--<span class="navbar-brand" href="#">-->
+    <!--<img src="../../../../unicorn.png" width="30" height="30" class="d-inline-block align-top" alt="">-->
+  <!--</span>-->
+  <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+    <!--<ul class="navbar-nav mr-auto">-->
+      <!--<li class="nav-item active">-->
+        <!--<a class="nav-link" routerLink="/playground">Playground <span class="sr-only">(current)</span></a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link" routerLink="/followers">Followers</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link" routerLink="/following">Following</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+        <!--<a class="nav-link" routerLink="/search">Search</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+    <!--<form class="form-inline my-2 my-lg-0" action="/">-->
+      <!--<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Logout</button>-->
+    <!--</form>-->
+  <!--</div>-->
+<!--</nav>-->
+<app-navbar></app-navbar>
+<!-- Cards -->
+<div class="row my-3">
+  <div class="col-sm-6" *ngFor="let item of listFollowing">
+    <div class="card text-center bg-dark text-white" style="width: 200px; height: 200px;">
+      <img class="card-img" src="assets/users.png">
+      <div class="card-img-overlay">
+        <h6 class="card-text my-5">{{item.FirstName}} {{item.LastName}}</h6>
+        <button class="btn btn-outline-secondary">Unfollow</button>
+      </div>
+    </div>
+  </div>
+</div>

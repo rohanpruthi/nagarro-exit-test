@@ -1,0 +1,111 @@
+<div class="form-group">
+  <h3 class="text-center">Please Sign Up:</h3>
+  <form method="post">
+    <label for="inpEmail" class="sr-only">Email address</label>
+    <input type="email" id="inpEmail" class="form-control" name="email" placeholder="Email Address" required #email>
+
+    <label for="inpFirstName" class="sr-only">First name</label>
+    <input type="text" id="inpFirstName" class="form-control" name="FirstName" placeholder="First name" required #firstname>
+
+    <label for="inpLastName" class="sr-only">Last name</label>
+    <input type="text" id="inpLastName" class="form-control" name="LastName" placeholder="Last name" required #lastname>
+
+    <label for="inpPassword" class="sr-only">Password</label>
+    <input type="password" id="inpPassword" #password class="form-control" name="password" placeholder="Password" required pattern="^(?=.*[A-Za-z])(?=.*?[0-9])(?=.*[$@$!%*#?&])[a-zA-Z0-9$@$!%*#?&]{8,}$" title="Atleast 1 alphabet, 1 number and 1 special character each.">
+
+    <label for="inpContact" class="sr-only">Contact</label>
+    <input type="text" id="inpContact" #contact class="form-control" name="contact" placeholder="Contact" required pattern="[0-9]{10,10}" title="10 digit mobile number.">
+
+    <label for="inpRegion" class="sr-only">Region</label>
+    <select class="form-control" name="country" required id="inpRegion" #region>
+      <option value="United States">United States</option>
+      <option value="United Kingdom">United Kingdom</option>
+      <option value="Australia">Australia</option>
+      <option value="Austria">Austria</option>
+      <option value="Bahamas">Bahamas</option>
+      <option value="Bangladesh">Bangladesh</option>
+      <option value="Belgium">Belgium</option>
+      <option value="Bermuda">Bermuda</option>
+      <option value="Bhutan">Bhutan</option>
+      <option value="Brazil">Brazil</option>
+      <option value="Bulgaria">Bulgaria</option>
+      <option value="Canada">Canada</option>
+      <option value="Chad">Chad</option>
+      <option value="Chile">Chile</option>
+      <option value="China">China</option>
+      <option value="Colombia">Colombia</option>
+      <option value="Costa Rica">Costa Rica</option>
+      <option value="Croatia">Croatia</option>
+      <option value="Cuba">Cuba</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Denmark">Denmark</option>
+      <option value="Dominican Republic">Dominican Republic</option>
+      <option value="Egypt">Egypt</option>
+      <option value="Fiji">Fiji</option>
+      <option value="Finland">Finland</option>
+      <option value="France">France</option>
+      <option value="French Guiana">French Guiana</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Germany">Germany</option>
+      <option value="Greece">Greece</option>
+      <option value="Guinea">Guinea</option>
+      <option value="Hong Kong">Hong Kong</option>
+      <option value="Hungary">Hungary</option>
+      <option value="Iceland">Iceland</option>
+      <option value="India" selected>India</option>
+      <option value="Indonesia">Indonesia</option>
+      <option value="Iran">Iran</option>
+      <option value="Iraq">Iraq</option>
+      <option value="Ireland">Ireland</option>
+      <option value="Israel">Israel</option>
+      <option value="Italy">Italy</option>
+      <option value="Jamaica">Jamaica</option>
+      <option value="Japan">Japan</option>
+      <option value="Jordan">Jordan</option>
+      <option value="Kenya">Kenya</option>
+      <option value="Kiribati">Kiribati</option>
+      <option value="Korea">Korea</option>
+
+      <option value="Lebanon">Lebanon</option>
+
+      <option value="Macao">Macao</option>
+      <option value="Madagascar">Madagascar</option>
+      <option value="Malaysia">Malaysia</option>
+      <option value="Maldives">Maldives</option>
+      <option value="Mauritius">Mauritius</option>
+      <option value="Mexico">Mexico</option>
+      <option value="Monaco">Monaco</option>
+      <option value="Mongolia">Mongolia</option>
+      <option value="Myanmar">Myanmar</option>
+      <option value="Nepal">Nepal</option>
+      <option value="Netherlands">Netherlands</option>
+      <option value="New Zealand">New Zealand</option>
+      <option value="Nigeria">Nigeria</option>
+      <option value="Norway">Norway</option>
+      <option value="Oman">Oman</option>
+      <option value="Pakistan">Pakistan</option>
+      <option value="Peru">Peru</option>
+      <option value="Philippines">Philippines</option>
+      <option value="Poland">Poland</option>
+      <option value="Portugal">Portugal</option>
+      <option value="Qatar">Qatar</option>
+      <option value="Saudi Arabia">Saudi Arabia</option>
+      <option value="Singapore">Singapore</option>
+      <option value="South Africa">South Africa</option>
+      <option value="Spain">Spain</option>
+      <option value="Sri Lanka">Sri Lanka</option>
+      <option value="Sweden">Sweden</option>
+      <option value="Switzerland">Switzerland</option>
+      <option value="Thailand">Thailand</option>
+      <option value="Turkey">Turkey</option>
+      <option value="Uganda">Uganda</option>
+      <option value="United Arab Emirates">United Arab Emirates</option>
+      <option value="Vietnam">Vietnam</option>
+      <option value="Yemen">Yemen</option>
+      <option value="Zimbabwe">Zimbabwe</option>
+    </select>
+    <label for="inpImage" class="sr-only">Image</label>
+    <input class="form-control" type="file" accept="image/jpeg,image/png" id="inpImage" required #image>
+    <button type="submit" class="btn btn-primary" (click)="register(firstname.value, lastname.value, email.value, password.value, contact.value, region.value, image.value)">Sign Up</button>
+  </form>
+</div>

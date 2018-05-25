@@ -1,0 +1,32 @@
+.form-group{
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-style: solid;
+  border: black;
+  border-width: 2px;
+}
+form img{
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+form input{
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+form button{
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  margin-top: 5px;
+  width: 150px;
+}
+form a{
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  margin-top: 3px;
+}

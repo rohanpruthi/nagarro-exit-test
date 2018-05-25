@@ -1,0 +1,26 @@
+.form-group{
+  padding-top: 40px;
+  padding-bottom: 40px;
+  /*background-color: whitesmoke;*/
+}
+form input{
+  width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+form select{
+  width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+form button{
+  width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}

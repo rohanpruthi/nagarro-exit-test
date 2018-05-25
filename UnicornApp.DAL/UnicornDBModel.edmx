@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UnicornDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FollowingUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FollowingUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tweet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Body" Type="varchar" MaxLength="240" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="TweetLikeDislike">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TweetId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="LikeDislike" Type="bit" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FollowingUser_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="FollowingUser" Type="Self.FollowingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FollowingUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FollowingUser_UserFollowing">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="FollowingUser" Type="Self.FollowingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FollowingUser">
+              <PropertyRef Name="FollowingUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tweet_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tweet">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TweetLikeDislike_Tweet">
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="1" />
+          <End Role="TweetLikeDislike" Type="Self.TweetLikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TweetLikeDislike">
+              <PropertyRef Name="TweetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TweetLikeDislike_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TweetLikeDislike" Type="Self.TweetLikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TweetLikeDislike">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UnicornDBModelStoreContainer">
+          <EntitySet Name="FollowingUser" EntityType="Self.FollowingUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tweet" EntityType="Self.Tweet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TweetLikeDislike" EntityType="Self.TweetLikeDislike" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FollowingUser_User" Association="Self.FK_FollowingUser_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="FollowingUser" EntitySet="FollowingUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FollowingUser_UserFollowing" Association="Self.FK_FollowingUser_UserFollowing">
+            <End Role="User" EntitySet="User" />
+            <End Role="FollowingUser" EntitySet="FollowingUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tweet_User" Association="Self.FK_Tweet_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Tweet" EntitySet="Tweet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TweetLikeDislike_Tweet" Association="Self.FK_TweetLikeDislike_Tweet">
+            <End Role="Tweet" EntitySet="Tweet" />
+            <End Role="TweetLikeDislike" EntitySet="TweetLikeDislike" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TweetLikeDislike_User" Association="Self.FK_TweetLikeDislike_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TweetLikeDislike" EntitySet="TweetLikeDislike" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UnicornDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FollowingUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FollowingUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_FollowingUser_User" FromRole="FollowingUser" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_FollowingUser_UserFollowing" FromRole="FollowingUser" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Tweet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Body" Type="String" MaxLength="240" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Computed" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Tweet_User" FromRole="Tweet" ToRole="User" />
+          <NavigationProperty Name="TweetLikeDislike" Relationship="Self.FK_TweetLikeDislike_Tweet" FromRole="Tweet" ToRole="TweetLikeDislike" />
+        </EntityType>
+        <EntityType Name="TweetLikeDislike">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TweetId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="LikeDislike" Type="Boolean" />
+          <NavigationProperty Name="Tweet" Relationship="Self.FK_TweetLikeDislike_Tweet" FromRole="TweetLikeDislike" ToRole="Tweet" />
+          <NavigationProperty Name="User" Relationship="Self.FK_TweetLikeDislike_User" FromRole="TweetLikeDislike" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FollowingUser" Relationship="Self.FK_FollowingUser_User" FromRole="User" ToRole="FollowingUser" />
+          <NavigationProperty Name="FollowingUser1" Relationship="Self.FK_FollowingUser_UserFollowing" FromRole="User" ToRole="FollowingUser" />
+          <NavigationProperty Name="Tweet" Relationship="Self.FK_Tweet_User" FromRole="User" ToRole="Tweet" />
+          <NavigationProperty Name="TweetLikeDislike" Relationship="Self.FK_TweetLikeDislike_User" FromRole="User" ToRole="TweetLikeDislike" />
+        </EntityType>
+        <Association Name="FK_FollowingUser_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="FollowingUser" Type="Self.FollowingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FollowingUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FollowingUser_UserFollowing">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="FollowingUser" Type="Self.FollowingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FollowingUser">
+              <PropertyRef Name="FollowingUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tweet_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tweet">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TweetLikeDislike_Tweet">
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="1" />
+          <End Role="TweetLikeDislike" Type="Self.TweetLikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TweetLikeDislike">
+              <PropertyRef Name="TweetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TweetLikeDislike_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TweetLikeDislike" Type="Self.TweetLikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TweetLikeDislike">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UnicornDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FollowingUser" EntityType="Self.FollowingUser" />
+          <EntitySet Name="Tweet" EntityType="Self.Tweet" />
+          <EntitySet Name="TweetLikeDislike" EntityType="Self.TweetLikeDislike" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_FollowingUser_User" Association="Self.FK_FollowingUser_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="FollowingUser" EntitySet="FollowingUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FollowingUser_UserFollowing" Association="Self.FK_FollowingUser_UserFollowing">
+            <End Role="User" EntitySet="User" />
+            <End Role="FollowingUser" EntitySet="FollowingUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tweet_User" Association="Self.FK_Tweet_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Tweet" EntitySet="Tweet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TweetLikeDislike_Tweet" Association="Self.FK_TweetLikeDislike_Tweet">
+            <End Role="Tweet" EntitySet="Tweet" />
+            <End Role="TweetLikeDislike" EntitySet="TweetLikeDislike" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TweetLikeDislike_User" Association="Self.FK_TweetLikeDislike_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TweetLikeDislike" EntitySet="TweetLikeDislike" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UnicornDBModelStoreContainer" CdmEntityContainer="UnicornDBEntities">
+          <EntitySetMapping Name="FollowingUser">
+            <EntityTypeMapping TypeName="UnicornDBModel.FollowingUser">
+              <MappingFragment StoreEntitySet="FollowingUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FollowingUserId" ColumnName="FollowingUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tweet">
+            <EntityTypeMapping TypeName="UnicornDBModel.Tweet">
+              <MappingFragment StoreEntitySet="Tweet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TweetLikeDislike">
+            <EntityTypeMapping TypeName="UnicornDBModel.TweetLikeDislike">
+              <MappingFragment StoreEntitySet="TweetLikeDislike">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TweetId" ColumnName="TweetId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LikeDislike" ColumnName="LikeDislike" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="UnicornDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
