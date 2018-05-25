@@ -30,7 +30,7 @@
       <img class="card-img" src="assets/users.png">
       <div class="card-img-overlay">
         <h6 class="card-text my-5">{{item.FirstName}} {{item.LastName}}</h6>
-        <button class="btn btn-outline-secondary">Unfollow</button>
+        <button class="btn btn-outline-secondary" (click)="unfollow(item.Id)">Unfollow</button>
       </div>
     </div>
   </div>

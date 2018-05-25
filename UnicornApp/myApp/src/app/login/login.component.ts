@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../user.service';
+import {current} from 'codelyzer/util/syntaxKind';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           console.log(data);
           sessionStorage.setItem('currentUserEmail', email);
-          console.log(sessionStorage.getItem('currentUserEmail'));
+          sessionStorage.setItem('currentUserId', data.Id);
+          // console.log(sessionStorage.getItem('currentUserId'));
           this.router.navigateByUrl('/playground');
         }
       });

@@ -9,9 +9,12 @@ import {UserService} from '../user.service';
   providers: [UserService]
 })
 export class NavbarComponent implements OnInit {
-
-  constructor(private userService: UserService, private router: Router) { }
-
+followingCount: number;
+  constructor(private userService: UserService, private router: Router) {
+    this.followingCount = +localStorage.getItem('followingCount');
+    this.followersCount = +localStorage.getItem('followersCount');
+  }
+followersCount: number;
   ngOnInit() {
   }
   logout() {

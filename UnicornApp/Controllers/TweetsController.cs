@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using UnicornApp.DAL;
 using UnicornApp.Business;
 using Newtonsoft.Json;
+using System.Web.Helpers;
+using System.Collections.Generic;
 
 namespace UnicornApp.Controllers
 {
@@ -20,20 +22,20 @@ namespace UnicornApp.Controllers
       {
         int userId = Convert.ToInt32(Session["UserId"]);
         var followingId = db.FollowingUser.Where(u => u.UserId == userId).Select(u => u.FollowingUserId).ToList();
-        var tweet = db.Tweet.Where(t => t.UserId == userId).Include(t => t.User).Select(u => new { u.Id, u.Body, u.UserId, u.CreatedAt, u.User.Email }).ToList();
-        foreach(var item in followingId)
+        var tweet = db.Tweet.Where(t => t.UserId == userId).Include(t => t.User).Select(u => new { u.Id, u.Body, u.UserId, u.CreatedAt, u.User.FirstName }).ToList();
+         foreach (var item in followingId)
         {
-          var temp = db.Tweet.Where(t => t.UserId == item).Include(t => t.User).Select(u => new { u.Id, u.Body, u.UserId, u.CreatedAt, u.User.Email }).FirstOrDefault();
+          var temp = db.Tweet.Where(t => t.UserId == item).Include(t => t.User).Select(u => new { u.Id, u.Body, u.UserId, u.CreatedAt, u.User.FirstName }).ToList();
           if (temp != null)
           {
-            tweet.Add(temp);
+            tweet.AddRange(temp);
           }
         }
         string json = JsonConvert.SerializeObject(tweet, Formatting.Indented, new JsonSerializerSettings
         {
           ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        return Json(tweet,JsonRequestBehavior.AllowGet);
+        return Json(tweet, JsonRequestBehavior.AllowGet);
       }
       return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
     }
@@ -42,7 +44,7 @@ namespace UnicornApp.Controllers
     // POST: Tweets/Create
     [HttpPost]
     //[ValidateAntiForgeryToken]
-    public string Create(string tweetBody)
+    public ActionResult Create(string tweetBody)
     {
       if (ModelState.IsValid && Session["UserId"] != null && TweetClass.ValidateTweet(tweetBody))
       {
@@ -51,10 +53,10 @@ namespace UnicornApp.Controllers
         tweet.UserId = Convert.ToInt32(Session["UserId"]);
         db.Tweet.Add(tweet);
         db.SaveChanges();
-        return tweet.Body + "\n" + tweet.UserId;
+        return new HttpStatusCodeResult(200);
       }
 
-      return "error";
+      return new HttpStatusCodeResult(HttpStatusCode.BadGateway);
     }
 
     // GET: Tweets/Edit/5
@@ -92,29 +94,29 @@ namespace UnicornApp.Controllers
     }
 
     // GET: Tweets/Delete/5
-    public ActionResult Delete(int? id)
-    {
-      if (id == null)
-      {
-        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      }
-      Tweet tweet = db.Tweet.Find(id);
-      if (tweet == null)
-      {
-        return HttpNotFound();
-      }
-      return View(tweet);
-    }
+    //public ActionResult Delete(int? id)
+    //{
+    //  if (id == null)
+    //  {
+    //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    //  }
+    //  Tweet tweet = db.Tweet.Find(id);
+    //  if (tweet == null)
+    //  {
+    //    return HttpNotFound();
+    //  }
+    //  return View(tweet);
+    //}
 
     // POST: Tweets/Delete/5
     [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public ActionResult DeleteConfirmed(int id)
+    //[ValidateAntiForgeryToken]
+    public ActionResult Delete(int id)
     {
       Tweet tweet = db.Tweet.Find(id);
       db.Tweet.Remove(tweet);
       db.SaveChanges();
-      return RedirectToAction("Index");
+      return new HttpStatusCodeResult(200);
     }
 
     protected override void Dispose(bool disposing)
@@ -126,9 +128,8 @@ namespace UnicornApp.Controllers
       base.Dispose(disposing);
     }
     [HttpPost]
-    public bool CreateLikeDislikeTweet(int id, bool likeDislike)
+    public ActionResult CreateLikeDislikeTweet(int id, bool likeDislike)
     {
-      bool result = false;
       if (ModelState.IsValid && Session["UserId"] != null)
       {
         int userId = Convert.ToInt32(Session["UserId"]);
@@ -136,33 +137,38 @@ namespace UnicornApp.Controllers
         if (temp == null)
         {
           TweetLikeDislike tweet = new TweetLikeDislike();
-          tweet.UserId = Convert.ToInt32(Session["UserId"]);
+          tweet.UserId = userId;
           tweet.TweetId = id;
           tweet.LikeDislike = likeDislike;
           db.TweetLikeDislike.Add(tweet);
           db.SaveChanges();
-          result = true;
+          return new HttpStatusCodeResult(200);
+        }
+        else
+        {
+          temp.LikeDislike = !temp.LikeDislike;
+          db.SaveChanges();
+          return new HttpStatusCodeResult(200);
         }
       }
-      return result;
+      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
     }
 
-    [HttpPost]
-    public bool EditLikeDislikeTweet(int id)
+    [HttpGet]
+    public ActionResult GetLikeDislikeTweet(int id)
     {
-      bool result = false;
       if (ModelState.IsValid && Session["UserId"] != null)
       {
         int userId = Convert.ToInt32(Session["UserId"]);
-        TweetLikeDislike tweet = db.TweetLikeDislike.Find(id);
-        if (tweet != null && tweet.UserId == userId)
+        var tweet = db.TweetLikeDislike.Where(t => t.TweetId == id && t.UserId == userId).Select(t => new { t.UserId , t.TweetId, t.LikeDislike}).FirstOrDefault();
+        if (tweet != null)
         {
-          tweet.LikeDislike = !tweet.LikeDislike;
-          db.SaveChanges();
-          result = true;
+          //tweet.LikeDislike = !tweet.LikeDislike;
+          //db.SaveChanges();
+          return Json(tweet,JsonRequestBehavior.AllowGet);
         }
       }
-      return result;
+      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
     }
 
     [HttpPost]

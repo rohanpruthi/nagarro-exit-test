@@ -14,13 +14,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="/">
           <div class="form-group">
             <label for="addNewTweet" class="sr-only">New Tweet</label>
-            <textarea class="form-control" name="tweetBody" id="addNewTweet" rows="3"  maxlength="240" title="Max 240 characters."></textarea>
-            <button type="submit" class="btn btn-primary my-2" data-dismiss="modal">Add Tweet</button>
+            <textarea class="form-control" name="tweetBody" id="addNewTweet" rows="3"  maxlength="240" title="Max 240 characters." #tweetBody></textarea>
+            <button type="submit" class="btn btn-primary my-2" data-dismiss="modal" (click)="addTweet(tweetBody.value)">Add Tweet</button>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -31,13 +29,35 @@
   <div class="col" *ngFor="let item of listTweets">
       <div class="card" style="margin-top: 3em">
           <div class="card-body">
-              <img src="../../../../users.png" style="border-radius: 50%" width="50px" height="50px">
+              <img src="assets/users.png" style="border-radius: 50%" width="50px" height="50px">
               {{item.Body}}
           </div>
           <div class="card-footer text-muted">
-              <a class="card-link">Edit</a>
-              <a class="card-link">Delete</a>
+            <label><input type="radio" name="optradio" (select)="likeTweet(item.Id)" value="true"><span>Like</span></label>
+            <label><input type="radio" name="optradio" (select)="dislikeTweet(item.Id)" value="false"><span>Dislike</span></label>
+              <button class="btn btn-sm" href="#" *ngIf="item.UserId == checkId" data-toggle="modal" data-target="#editTweetModal">Edit</button>
+            <button class="btn btn-sm" *ngIf="item.UserId == checkId" (click)="deleteTweet(item.Id)">Delete</button>
           </div>
       </div>
+    <!-- Modal -->
+    <div class="modal fade" id="editTweetModal" tabindex="-1" role="dialog" aria-labelledby="editTweetModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editTweetModalLabel">Edit Tweet</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="addNewTweet" class="sr-only">Edit Tweet</label>
+              <textarea class="form-control" name="tweetBody" id="editTweet" rows="3"  maxlength="240" title="Max 240 characters." #tweetBody>{{item.Body}}</textarea>
+              <button type="submit" class="btn btn-primary my-2" data-dismiss="modal" (click)="editTweet(item.Id, tweetBody.value)">Edit Tweet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

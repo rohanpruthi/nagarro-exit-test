@@ -11,7 +11,9 @@ export class UserService {
     getFollowing() {
     return this.http.get(this.BASE_URL + 'GetFollowing/');
     }
-    getFollower() {}
+    getFollowers() {
+    return this.http.get(this.BASE_URL + 'GetFollowers/');
+    }
 
     register(firstName: string, lastName: string, email: string, password: string, contact: string, region: string) {
       return this.http.post(this.BASE_URL + 'SignUp/', {
@@ -34,7 +36,9 @@ export class UserService {
     return this.http.post(this.BASE_URL + 'FollowUser/' + id, {});
     }
     unfollowUser(id: number) {
-    return this.http.post(this.BASE_URL + 'Unfollow/' + id, {});
+      return this.http.post(this.BASE_URL + 'Unfollow/' + id, {});
     }
-
+    searchPeople(searchString: string) {
+    return this.http.post(this.BASE_URL + 'SearchUser', {searchString: searchString});
+    }
 }

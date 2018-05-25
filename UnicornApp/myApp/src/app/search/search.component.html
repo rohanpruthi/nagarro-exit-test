@@ -1,5 +1,16 @@
 <app-navbar></app-navbar>
 <form class="form-inline">
-  <input class="form-control" type="search" placeholder="Search People or Hastags" aria-label="Search" name="searchItem">
-  <button class="btn btn-outline-primary" type="submit">Search</button>
+  <input class="form-control" type="search" placeholder="Search People or Hastags" aria-label="Search" name="searchItem" #searchString>
+  <button class="btn btn-outline-primary" type="submit" (click)="searchPeople(searchString.value)">Search</button>
 </form>
+<div class="row my-3">
+  <div class="col-sm-6" *ngFor="let item of listPeopleSearch">
+    <div class="card text-center bg-dark text-white" style="width: 200px; height: 200px;">
+      <img class="card-img" src="assets/users.png">
+      <div class="card-img-overlay">
+        <h6 class="card-text my-5">{{item.FirstName}} {{item.LastName}}</h6>
+        <button class="btn btn-outline-secondary" (click)="follow(item.Id)">Follow</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -25,13 +26,7 @@ namespace UnicornApp.Controllers
       var user = db.User.Select(u => u.Email).ToList();
       return user;
     }
-
-    //// GET: Users/Create
-    //public ActionResult Create()
-    //{
-    //  return View();
-    //}
-
+    
     // POST: Users/SignUp
     [HttpPost]
     public JsonResult SignUp([Bind(Include = "Email,Password,FirstName,LastName,Contact,Region,Image")] User user)
@@ -41,11 +36,11 @@ namespace UnicornApp.Controllers
         db.User.Add(user);
         db.SaveChanges();
       }
-      string json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
-      {
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-      });
-      return Json(json, JsonRequestBehavior.AllowGet);
+      //string json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+      //{
+      //  ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+      //});
+      return Json(new { user.Email, user.Id}, JsonRequestBehavior.AllowGet);
     }
     [HttpPost]
     public JsonResult Login(string email, string password)
@@ -57,11 +52,11 @@ namespace UnicornApp.Controllers
         Session["Password"] = password;
         Session["UserId"] = UserClass.FindUserByEmail(email).Id;
         //User user = UserClass.FindUserByEmail(email);
-        string json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
-        {
-          ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        });
-        return Json(json, JsonRequestBehavior.AllowGet); //Session["Email"].ToString() + Session["UserId"];
+        //string json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+        //{
+        //  ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //});
+        return Json(new { user.Email, user.Password, user.Id}, JsonRequestBehavior.AllowGet); //Session["Email"].ToString() + Session["UserId"];
       }
       return Json(new { status = false});
     }
@@ -115,19 +110,36 @@ namespace UnicornApp.Controllers
     }
 
     [HttpGet]
-    public List<User> GetFollowing()
+    public ActionResult GetFollowing()
     {
       if (ModelState.IsValid && Session["UserId"] != null)
       {
         int userId = Convert.ToInt32(Session["UserId"]);
-        var user = db.FollowingUser.Where(u => u.UserId == userId).Select(u => u.User1);
-        return user.ToList();
+        var user = db.FollowingUser.Where(u => u.UserId == userId).Select(u => new { u.User1.FirstName, u.User1.LastName, u.User1.Id, u.User1.Email });
+        if (user != null)
+        {
+          return Json(user, JsonRequestBehavior.AllowGet);
+        }
       }
-      return null;
+      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+    }
+    [HttpGet]
+    public ActionResult GetFollowers()
+    {
+      if (ModelState.IsValid && Session["UserId"] != null)
+      {
+        int userId = Convert.ToInt32(Session["UserId"]);
+        var user = db.FollowingUser.Where(u => u.FollowingUserId == userId).Select(u => new { u.User.FirstName, u.User.LastName, u.User.Id, u.User.Email });
+        if (user != null)
+        {
+          return Json(user, JsonRequestBehavior.AllowGet);
+        }
+      }
+      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
     }
 
     [HttpPost]
-    public bool Unfollow(int id)
+    public ActionResult Unfollow(int id)
     {
       var result = false;
       if (ModelState.IsValid && Session["UserId"] != null)
@@ -138,11 +150,20 @@ namespace UnicornApp.Controllers
         {
           db.FollowingUser.Remove(delUser);
           db.SaveChanges();
-          result = true;
+          return new HttpStatusCodeResult(200);
         }
       }
-      return result;
+      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
     }
 
+    public ActionResult SearchUser(string searchString)
+    {
+      var user = db.User.Where(u => u.FirstName.Contains(searchString) || u.LastName.Contains(searchString)).Select(u => new { u.Id, u.FirstName, u.LastName, u.Email });
+      if(user !=null)
+      {
+        return Json(user.ToList(), JsonRequestBehavior.AllowGet);
+      }
+      return new HttpStatusCodeResult(404);
+    }
   }
 }
